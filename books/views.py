@@ -16,7 +16,7 @@ class BookListView(APIView):
           books= Book.objects.filter(available=True)
           serializer= BookSerializer(books, many=True)
           return Response(serializer.data)
-     
+
 class BookByAuthorView(APIView):
      def get(self,request,author_name):
           books= Book.objects.filter(author=author_name,available=True)
@@ -29,7 +29,7 @@ class BookBorrowView(APIView):
           if  book.available:
                book.available=False
                book.borrower_email= request.data.get('borrower_email')
-               book.borrower_at= datetime.now().date()
+               book.borrowed_at= datetime.now().date()
                book.save()
                if request.data.get('borrower_email') is None:
                     return Response({'message': 'You are a new user, you can borrow the book'}, status= HTTP_200_OK)
